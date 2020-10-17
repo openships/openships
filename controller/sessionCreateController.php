@@ -1,0 +1,9 @@
+<?php 
+  session_start();
+  $user_id=$_POST['user_id'];
+  $password=$_POST['password'];
+  $_SESSION['auth']=array(
+    'user_id'=>$user_id,
+    'password'=>$password
+  );
+?>

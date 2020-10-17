@@ -1,0 +1,95 @@
+#infoBoxesContent {
+  width: 320px;
+  background-color: #fff;
+  border: 2px solid #000;
+  position: absolute;
+  left: -305px;
+  top: 152px;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+#infoBoxesContent .main-img img {
+  width: 100%;
+}
+
+#infoBoxesContent .header {
+  height: 30px;
+  font-weight: bold;
+}
+
+#infoBoxesContent .fromTo {
+  position: relative;
+  margin-top: -7px;
+}
+
+#infoBoxesContent .fromTo .fromTo_inner {
+  width: 50%;
+  height: 90px;
+  display: inline-block;
+  border: 2px solid #000;
+  font-size: 14px;
+  text-align: center;
+  padding-top: 15px;
+  padding-right: 23px;
+  padding-left: 23px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+#infoBoxesContent .fromTo .fromTo_inner.right {
+  border-right: none;
+  border-left: none;
+}
+
+#infoBoxesContent .fromTo .fromTo_inner.left {
+  border-left: none;
+}
+
+#infoBoxesContent .fromTo .fromTo_icon {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 47px;
+  height: 47px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 2px solid #000;
+}
+
+#infoBoxesContent .fromTo .fromTo_icon img {
+  margin-top: 15px;
+  margin-left: 5px;
+}
+
+#infoBoxesContent .date {
+  margin-top: -7px;
+  font-size: 15px;
+  text-align: center;
+  height: 10%;
+}
+
+#infoBoxesContent .date .date_inner {
+  display: inline-block;
+  width: 50%;
+  height: 40px;
+  padding-top: 12px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+#infoBoxesContent .date .date_inner.left {
+  border-right: 2px solid #000;
+}
+
+#infoBoxesContent .non-display-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#infoBoxesContent .non-display-button:hover {
+  cursor: pointer;
+}

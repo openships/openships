@@ -1,0 +1,9 @@
+<?php
+  session_start();
+  if(!(isset($_SESSION['auth']['user_id']))){
+    header("Location:sign.php");
+  }else{
+    $user_id=$_SESSION['auth']['user_id'];
+    $password=$_SESSION['auth']['password'];
+  }
+?>

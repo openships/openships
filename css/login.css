@@ -1,0 +1,39 @@
+th {
+  text-align: left;
+}
+
+.submit-btn:hover {
+  cursor: pointer;
+}
+
+.switch {
+  width: 78px;
+  height: 30px;
+  border: 1px solid #000;
+  display: inline-block;
+  text-align: center;
+  line-height: 30px;
+}
+
+.switch:hover {
+  cursor: pointer;
+}
+
+.switch.left {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.switch.right {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.switch.active {
+  background-color: #000;
+  color: #fff;
+}
+
+.submit-btn {
+  width: 120px;
+}
