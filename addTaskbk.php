@@ -23,7 +23,7 @@
     <tr><th>集荷先</th><td><input type="text" name="pick-up-adress" id="pick-up-address"></td></tr>
     <tr><th>配送時間</th><td><input type="datetime-local" name="shipping-time" id="shipping-time"></td></tr>
     <tr><th>集荷時間</th><td><input type="datetime-local" name="pick-up-time" id="pick-up-time"></td></tr>
-    <tr><td colspan="2"><button id="submit">登録</button></td></tr>
+    <tr><td><button id="submit">登録</button></td></tr>
   </table>
   <script>
     //登録処理
@@ -37,14 +37,20 @@
         $("#msg").text('必須項目を入力してください');
         return false;
       }else{
-        db.collection('task').add({
-          shipping_address:shipping_address,
-          pick_up_address:pick_up_address,
-          shipping_time:shipping_time,
-          pick_up_time:pick_up_time,
-          user_id:user_id
-        });
-      location.href="./mypage.php";
+        db.collection('user').where("user_id","==",user_id).get().then(function(querySnapshot){
+          doc=querySnapshot.docs[0]
+          data=doc.data()
+          tel=data.tel
+          db.collection('task').add({
+            shipping_address:shipping_address,
+            pick_up_address:pick_up_address,
+            shipping_time:shipping_time,
+            pick_up_time:pick_up_time,
+            user_id:user_id,
+            tel:tel,
+          });
+          setTimeout(function(){location.href="./mypage.php"},500);
+        })
       }
     });
   </script>

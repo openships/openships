@@ -8,23 +8,29 @@
     <script src='https://code.jquery.com/jquery-3.3.1.js'></script>
     <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase.js"></script>   
     <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-analytics.js"></script>
+    <script src="js/testProgram.js"></script>
     <script src="js/firebase.js"></script>
     <link rel="stylesheet" type="text/css" href="./css/style.css">
+    <!-- <link rel="stylesheet" type="text/css" href="./main.css"> -->
+    <link rel="stylesheet" type="text/css" href="./css/mapmain.css">
   </head>
   
 
-  <style>
-    html { height: 100% }
-    body { height: 100% }
-    #map { height: 70%; width: 100%}
-    #output {width:700px; font-size:48px;background:red;}
-  </style>
-    
+  
+ 
   <body>
-    <div id="output"></div>
+  <img class="logo" src="img/logo.png">
+    <div class="testButtons">
+      <input id="testStart" type="button" value="テスト開始" onclick=doTest()>
+      <input id="testStop" type="button" value="テスト終了" disabled onclick=stopTest()>
+    </div>
+    <!-- <div id="output"></div> -->
+    <!---->
+    <div class="map-area">
     <div id="map"></div>
     <!-- <button id="send">送信</button> -->
     <div id="infoBoxesContent"></div>
+    </div>
 
 
     <script>
@@ -54,7 +60,6 @@
       let marker='';
       let zoom='';
       let markers=[];
-      //let infoes=[];
       let LatsLngs=[];
       let directionsDisplay=[];
       let infoBoxes=[];
@@ -69,7 +74,7 @@
         console.log('緯度:'+Mylatitude+' 経度:'+Mylongitude);
         //設定
         let Options = {
-          zoom: 15,      //地図の縮尺値
+          zoom: 13,      //地図の縮尺値
           center: MyLatLng,    //地図の中心座標
           //mapTypeId: 'roadmap'   //地図の種類
         };
@@ -79,14 +84,18 @@
       //firebaseに変更があるたびマーカーを再壁画
       db.collection('task').onSnapshot(function(querySnapshot){
         setMarker(querySnapshot);
-        output = '緯度'+latitude+'<br> 経度:'+longitude;
-        $('#output').html(output);
+        // output = '緯度'+latitude+'<br> 経度:'+longitude;
+        // $('#output').html(output);
       });
 
       //マーカーを壁画
       function setMarker(querySnapshot){
         let data=''
         let LatLng=''
+
+        LatsLngs=[];
+        pick_up_addresses=[];
+        shipping_addresses=[];
         
         //マーカーを削除
         if(!(markers=='')){
@@ -98,7 +107,8 @@
 
         querySnapshot.docs.forEach(function(doc){
           data=doc.data();
-          if(!(data.latlng==null)){
+          running_status=data.running_status
+          if(running_status=='on'){
             latitude=data.latlng['Ic'];
             longitude=data.latlng['wc'];
             user_id=data.user_id;
@@ -110,8 +120,44 @@
             shipping_time=shipping_time.replace(/-/g, '/')
             pick_up_address=data.pick_up_address
             shipping_address=data.shipping_address
+            tel=data.tel
+            track_number=data.track_number
+            track_img=data.track_img
+            url=data.url
+           // console.log(track_img)
+            // track_type=data.track_type
+            // max_weight=data.max_weight
+            // max_length=data.max_length              
 
-
+            //インフォメーション作成
+            let infoboxContent = document.createElement('div');
+            infoboxContent=`
+              <div class="infobox">
+                <div class="non-display-button" id="non-display">×</div>
+                <div class="inner">
+                  <div class="header">`+user_id+`</div>
+                  <div class="contact"><a href="tel:`+tel+`"><img src="img/icon_tel.png"><p><u>`+tel+`</u></p></a></div>
+                  <div class="site"><a href="`+url+`"><img src="img/icon_site.png"><p><u>`+url+`</u></p></a></div>
+                  <div class="main-img"><img src="./uploads/`+track_img+`"></div>
+                  <div class="fromTo">
+                    <table>
+                      <tr>
+                        <td class="fromTo_inner left">`+pick_up_address+`</td>
+                        <td class="fromTo_inner right">`+shipping_address+`</td>
+                      </tr>
+                    </table>
+                    <div class="fromTo_icon"><img src="img/info_icon.png"></div>
+                  </div>
+                  <div class="date">
+                    <div class="date_inner left">`+pick_up_time+`</div><!--
+                    --><div class="date_inner right">`+shipping_time+`</div>
+                  </div>
+                  <div class="container"></div>
+                  <div class="footer"></div>
+                </div>
+              </div>`
+              infoBoxes.push(infoboxContent);
+    
             LatLng = new google.maps.LatLng(latitude, longitude);
 
             //マーカーを表示
@@ -125,36 +171,13 @@
             });
             markers.push(marker);
 
-            //インフォメーション作成
-            let infoboxContent = document.createElement('div');
-            infoboxContent=`
-              <div class="infobox">
-                <div class="non-display-button" id="non-display">×</div>
-                <div class="inner">
-                  <div class="header">`+user_id+`</div>
-                  <div class="main-img"><img src="img/sample.png"></div>
-                  <div class="fromTo">
-                    <div class="fromTo_inner left">`+pick_up_address+`</div><!--
-                    --><div class="fromTo_inner right">`+shipping_address+`</div>
-                    <div class="fromTo_icon"><img src="img/info_icon.png"></div>
-                  </div>
-                  <div class="date">
-                    <div class="date_inner left">`+pick_up_time+`</div><!--
-                    --><div class="date_inner right">`+shipping_time+`</div>
-                  </div>
-                  <div class="container"></div>
-                  <div class="footer"></div>
-                </div>
-              </div>`
-            infoBoxes.push(infoboxContent);
-
 
             LatsLngs.push(LatLng)   
 
             pick_up_addresses.push(pick_up_address)
             shipping_addresses.push(shipping_address)
           }
-        });
+        })
 
         //マーカークリックでインフォと経路を表示する
         for(let i=0; i<markers.length; i++){
@@ -172,7 +195,7 @@
 
       //×ボタンクリックでインフォ非表示
       $(document).on('click','#non-display',function(){
-        $("#infoBoxesContent").css('left','-305px');
+        $("#infoBoxesContent").css('left','-380px');
         setTimeout(function(){$("#infoBoxesContent").html("")},500);
         directionsDisplay.setMap(null);
       })
@@ -211,12 +234,10 @@
                   if (results[0].geometry) {
                     // 緯度経度を取得
                     pickLatLng=results[0].geometry.location;
-
                     let request = {
                       origin:LatLng,           //現在地
                       destination:shippingLatLng,//目的地
                       waypoints: [ // 経由地点(指定なしでも可)
-                        // { location: new google.maps.LatLng(33.7885482,130.4114043) },
                         { location: pickLatLng }
                       ],
                       travelMode: google.maps.DirectionsTravelMode.DRIVING, //ルートの種類
@@ -225,6 +246,8 @@
                       directionsDisplay = new google.maps.DirectionsRenderer();
                       directionsDisplay.setOptions({suppressMarkers: true,zoom:20});
                       directionsDisplay.setDirections(result); //取得した情報をset
+                      console.log(result.routes[0].overview_path[0].lat())
+                      console.log(result.routes[0].overview_path[0].lng())
                       directionsDisplay.setMap(map); //マップに描画
                       setTimeout(function(){
                         zoom=directionsDisplay["map"]["zoom"]

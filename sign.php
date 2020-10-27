@@ -11,9 +11,13 @@
     <script src="js/firebase.js"></script>
     <link rel="stylesheet" type="text/css" href="./css/login.css">
     <link rel="stylesheet" type="text/css" href="./css/common.css">
+    <link rel="stylesheet" type="text/css" href="./css/sign.css">
   </head>
 <!-- <form action="../controller/login-act.php" method="POST"> -->
-  <div class="switch left">ログイン</div><div class="switch right">登録</div>
+  <div class="switch-buttons">
+    <div class="switch left">ログイン</div><!--
+--><div class="switch right">登録</div>
+  </div>
   <div id="msg"></div>
   <table>
     <tr><th>会社名：</th><td><input type="text" name="user_id" id="user_id"></td></tr>
@@ -22,11 +26,13 @@
     <tr class="signUp"><th>電話番号：</th><td><input type="tel" name="tel" id="tel"></td></tr>
     <tr class="signUp"><th>ホームページURL：</th><td><input type="url" name="url" id="url"></td></tr>
     <tr>
-      <td>
+      <td colspan="2">
         <input id="signIn" class="submit-btn" type="submit" value="ログイン"><input id="signUp" class="submit-btn signUp" type="submit" value="登録">
       </td>
     </tr>
   </table>
+  <img class="logo string-logo" src="./img/login-background-logo.png">
+  <img class="logo" src="./img/background-Earth.png">
 <!-- </form> -->
 
 <script>
@@ -67,7 +73,6 @@
               url:"./controller/sessionCreateController.php",
               data:data,
               success:function(){
-                //console.log("success");
                 location.href="mypage.php";
               },
               error:function(XMLHttpRequest,textStatus,errorThrown){
@@ -86,33 +91,30 @@
           const userIdInFirebase=data.user_id;
           if(userIdInFirebase==user_id){
             existJudge='yes';
-            //console.log("yse!");
           }
         });
         if(existJudge=='no'){
-          //console.log("登録！");
-          db.collection('user').add({
-            user_id:user_id,
-            password:password,
-            address:address,
-            tel:tel,
-            url:url
-          });
           const data={"user_id":user_id,"password":password};
           $.ajax({
             type:"POST",
             url:"./controller/sessionCreateController.php",
             data:data,
             success:function(){
-              //console.log("success");
-              location.href="mypage.php";
+              db.collection('user').add({
+                user_id:user_id,
+                password:password,
+                address:address,
+                tel:tel,
+                url:url
+              });
+              setTimeout(function(){location.href="mypage.php"},500);
             },
             error:function(XMLHttpRequest,textStatus,errorThrown){
               alert(errorThrown);
             }
           });
+
         }else{
-          //console.log("msg");
           $("#msg").text('すでに登録されているユーザーIDです');
         }
       });

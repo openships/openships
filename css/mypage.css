@@ -1,0 +1,146 @@
+body {
+  margin: 0;
+}
+
+ul {
+  -webkit-margin-before: 0em;
+          margin-block-start: 0em;
+  -webkit-margin-after: 0em;
+          margin-block-end: 0em;
+  -webkit-padding-start: 0px;
+          padding-inline-start: 0px;
+}
+
+li {
+  list-style: none;
+}
+
+.header {
+  color: #fff;
+  background-color: #000;
+  text-align: center;
+  font-size: 2rem;
+  height: 70px;
+  line-height: 70px;
+  margin-bottom: 70px;
+}
+
+.track-pic {
+  position: absolute;
+  top: 70px;
+  right: 0;
+  width: 180px;
+  z-index: 2;
+  opacity: 0.8;
+}
+
+.track-pic img {
+  width: 100%;
+}
+
+.global-nav {
+  height: 80vh;
+  display: inline-block;
+  background-color: #000;
+  color: #fff;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  float: left;
+}
+
+.global-nav .nav-lists li {
+  height: 50px;
+  line-height: 50px;
+  border-bottom: 1px solid #fff;
+  padding-right: 30px;
+  padding-left: 30px;
+}
+
+.global-nav .nav-lists .menu {
+  font-weight: bold;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid;
+  font-size: 20px;
+}
+
+.global-nav .nav-lists .menu-list:hover {
+  cursor: pointer;
+}
+
+.content-area {
+  display: inline-block;
+  height: 70vh;
+  float: left;
+  padding-left: 30px;
+  position: absolute;
+}
+
+#task-data-list td {
+  padding: 4px 8px 4px;
+}
+
+#task-data-list td .place-input {
+  width: 97%;
+}
+
+.track-lists {
+  padding-top: 20px;
+}
+
+.track-lists li {
+  display: inline-block;
+  margin-right: 15px;
+}
+
+.track-lists li .track-img {
+  display: inline-block;
+  width: 145px;
+}
+
+.track-lists li .track-info {
+  display: inline-block;
+}
+
+.track-lists li .preview-area {
+  display: inline-block;
+  width: 250px;
+}
+
+.track-lists li .preview-area .preview {
+  width: 145px;
+}
+
+.track-lists .track-add-area {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.dropdown {
+  border: 1px solid #000;
+  font-size: 12px;
+  padding: 1px 1px;
+  width: 100px;
+}
+
+.dropdown:hover {
+  cursor: pointer;
+}
+
+.dropdwn_menu {
+  width: 100px;
+  padding: 1px 1px;
+  font-size: 12px;
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #546E7A;
+}
+
+.dropdwn_menu:hover {
+  cursor: pointer;
+}
+
+.dropdwn_menu li:hover {
+  background-color: #2196F3;
+}

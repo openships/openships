@@ -1,0 +1,86 @@
+body{
+    
+    /* padding:0 100px; */
+    /* text-align:left; */
+    /* font-size: 2.8vh; */
+    font-family: 'M PLUS Rounded 1c';
+    background-color: rgb(232, 235, 232);
+	/* background-size: 80px 80px; */
+	
+    /* background-color: #aaaaaa; */
+	
+    
+    background-image: url(../img/背景MAP.png);
+    background-size: cover;
+}
+
+input{
+    appearance: none;
+    border-radius: 5px;
+    background: #808180;
+    color: #fff;
+    padding: 8px 16px;
+    font-size: 16px;
+}
+
+.map-area{
+    width: 99.4%;
+    position:relative;
+    margin: 0 auto;
+    overflow:hidden;
+    height: 80vh;
+    border: solid 3px #232425;
+    border-radius: 8px;
+}
+
+#map{
+    filter:hue-rotate(100deg);
+    -webkit-filter:hue-rotate(40deg);
+    position: 80px;
+    position: relative;
+    height:100%;
+    width: 100%;
+}
+
+
+button{
+    list-style-type:none;
+    border: 1px solid #666;
+    background-color: #FFF;
+    display:table-cell;  /* 定義 */
+    cursor: pointer;
+    display: inline-block;
+    padding: 10px 24px;
+    text-decoration: none;
+    border: 1px;
+    background: rgb(138, 138, 139);;
+    color: #fff;
+    box-shadow: 0px 2px 4px rgb(24, 240, 24);
+    
+    font-size: 15px;
+    width: 180px;
+    height: 38px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gm-style{
+    padding-left: 80px;
+}
+
+.infobox{
+    background:#C9C9C9;
+}
+
+
+.main-img{
+    /* border: solid 3px #232425; */
+    /* border-radius: 5px; */
+    overflow: hidden;
+}
+
+.site p,.contact p{
+    color: black;
+}

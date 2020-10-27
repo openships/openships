@@ -1,41 +1,72 @@
-// .infoBox{
-//   width:500px;
-//   // position:absolute;
-//   // left:0;
-  
-// }
+body{
+  margin: 0px;
+  font-size:2.4vh;
+}
+
+.logo{
+  margin: 10px 10px;
+  width:170px;
+}
+
+.testButtons{
+  position:absolute;
+  right:0;
+  top:17px;
+  input{
+    cursor:pointer;
+  }
+  input:disabled{
+    opacity:0.6;
+  }
+}
 
 #infoBoxesContent{
-  width:320px;
-  //height:70%;
-  background-color:#fff;
+  width:55vh;
   border:2px solid #000;
   position:absolute;
-  left:-305px;
-  top:152px;
+  left: -380px;
+  top: 0;
   transition:0.5s;
   .main-img{
+    margin-top:0.5vh;
     img{
       width:100%;
     } 
   }
   .header{
-    height:30px;
     font-weight:bold;
+    font-size:3.3vh;
+    padding: 0.35vh;
+  }
+  .site,.contact{
+    padding: 0.3vh;
+    p{
+      margin-block-start: 0em;
+      margin-block-end: 0em;
+      display:inline-block;
+      font-size: 2.5vh;
+      width: 85%;
+      white-space: nowrap;
+    }
+    img{
+      width:2.5vh;
+      margin-right:5px;
+    }
   }
   .fromTo{
     position:relative;
     margin-top:-7px;
+    table{
+      border-spacing: 0px!important;
+    }
     .fromTo_inner{
       width:50%;
-      height:90px;
+      height:17.1vh;
       display:inline-block;
       border:2px solid #000;
-      font-size:14px;
+      font-size:2vh;
       text-align:center;
-      padding-top:15px;
-      padding-right: 23px;
-      padding-left: 23px;
+      padding:3.1vh;
       box-sizing:border-box;
       &.right{
         border-right:none;
@@ -45,34 +76,30 @@
         border-left:none;
       }
     }
-    .fromTo_icon{
-      position:absolute;
-      top:10px;
-      left:0;
-      right:0;
-      margin:0 auto;
-      width:47px;
-      height:47px;
-      background-color:#fff;
-      border-radius:50%;
-      border:2px solid #000;
-      img{
-        margin-top:15px;
-        margin-left:5px;
-      }
+  }
+  .fromTo_icon{
+    position:absolute;
+    top:3.2vh;
+    left:0;
+    right:0;
+    margin:0 auto;
+    width: 8.5vh;
+    height: 8.5vh;
+    border-radius:50%;
+    img{
+      width: 100%;
+      height: 100%;
     }
   }
   .date{
     margin-top:-7px;
-    font-size:15px;
+    font-size:2.5vh;
     text-align:center;
     height:10%;
     .date_inner{
       display:inline-block;
-      //border:1px solid #000;
       width:50%;
-      height:40px;
-      padding-top:12px;
+      padding:2.5vh 2vh 2.5vh;
       box-sizing:border-box;
       &.right{
         //width:49.7%;
@@ -87,70 +114,28 @@
     position:absolute;
     top:0;
     right:0;
+    right: 6px;
+    font-size: 3vh;
     &:hover{
       cursor:pointer;
     }
   }
 }
 
-
-.infobox{
-  // position:absolute;
-  // left:0;
-  // float:left;
-  // position:fixed;
-  // left:0;
-
+.sendPointButtons{
+  position: relative;
+  top: 50%;
+  text-align: center;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  .sendPointButton{
+    // border:1px solid #000;
+    display:inline-block;
+    padding:15px 30px;
+    font-size:24px;
+    margin:10px;
+    &:hover{
+      cursor:pointer;
+    }
+  }
 }
-
-// #map{
-//   float: left;
-//   >div{
-//     &:nth-child(1){
-//       >div{
-//         &:nth-child(1){
-//           >div{
-//             &:nth-child(1){
-//               >div{
-//                 &:nth-child(3){
-//                  // margin-left:-50vw!important;
-//                   >div{
-//                     &:nth-child(1){
-//                     // margin-left:-50vw!important;
-//                       >div{
-//                         &:nth-child(2){
-//                         // margin-left:-50vw!important;
-//                           >div{
-//                             &:nth-child(1){
-//                             // margin-left:-50vw!important;
-//                               >div{
-//                                 &:nth-child(1){
-//                                 // margin-left:-50vw!important;
-//                                   >div{
-//                                     &:nth-child(1){
-//                                     // margin-left:-50vw!important;
-//                                       >div{
-//                                         &:nth-child(1){
-//                                         // margin-left:-50vw!important;
-//                                           float: left;
-//                                         }
-//                                       }
-//                                     }
-//                                   }
-//                                 }
-//                               }
-//                             }
-//                           }
-//                         }
-//                       }
-//                     }
-//                   }
-//                 }
-//               }
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// }

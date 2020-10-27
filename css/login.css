@@ -2,38 +2,75 @@ th {
   text-align: left;
 }
 
-.submit-btn:hover {
-  cursor: pointer;
+.switch-buttons {
+  padding-top: 80px;
+  width: 350px;
+  margin: 0 auto;
 }
 
-.switch {
-  width: 78px;
-  height: 30px;
+.switch-buttons .switch {
+  width: 49%;
+  height: 44px;
   border: 1px solid #000;
   display: inline-block;
   text-align: center;
-  line-height: 30px;
+  line-height: 44px;
 }
 
-.switch:hover {
+.switch-buttons .switch:hover {
   cursor: pointer;
 }
 
-.switch.left {
+.switch-buttons .switch.left {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
 }
 
-.switch.right {
+.switch-buttons .switch.right {
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
 
-.switch.active {
+.switch-buttons .switch.active {
   background-color: #000;
   color: #fff;
 }
 
 .submit-btn {
-  width: 120px;
+  width: 100%;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.submit-btn:hover {
+  cursor: pointer;
+}
+
+table {
+  margin: 0 auto;
+  margin-top: 40px;
+  width: 350px;
+}
+
+table tr {
+  height: 35px;
+}
+
+table th {
+  width: 36%;
+}
+
+table td {
+  width: 64%;
+}
+
+.logo {
+  width: 400px;
+  position: absolute;
+  bottom: 10px;
+  right: 40px;
+}
+
+.string-logo {
+  z-index: 2;
 }
