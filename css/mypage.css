@@ -76,6 +76,10 @@ li {
   position: absolute;
 }
 
+.content-area th, .content-area td {
+  font-size: 14px;
+}
+
 #task-data-list td {
   padding: 4px 8px 4px;
 }

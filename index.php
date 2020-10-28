@@ -124,11 +124,7 @@
             track_number=data.track_number
             track_img=data.track_img
             url=data.url
-           // console.log(track_img)
-            // track_type=data.track_type
-            // max_weight=data.max_weight
-            // max_length=data.max_length              
-
+              
             //インフォメーション作成
             let infoboxContent = document.createElement('div');
             infoboxContent=`

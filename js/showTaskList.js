@@ -27,7 +27,7 @@ function showTaskList(){
       }
     });
     output+="</table>"
-    console.log(output)
+    // console.log(output)
     $(".content-area").html(output);
   });
 }
@@ -42,11 +42,11 @@ function prepareAddTask(){
       imgName=data.img_name
       options+='<li class="'+imgName+' hover-triger">'+track_number+'</li>'      
     })
-    console.log(options)
+    // console.log(options)
     output='';
     output+='<tr id="add-area">'
-    output+='<td><input type="text" name="pick-up-adress" class="place-input" id="pick-up-address"></td>'
-    output+='<td><input type="text" name="shipping-address" class="place-input" id="shipping-address"></td>'
+    output+='<td><input id="pick-up-address" type="text" name="pick-up-adress" class="place-input"></td>'
+    output+='<td><input id="shipping-address" type="text" name="shipping-address" class="place-input"></td>'
     output+='<td><input type="datetime-local" name="pick-up-time" id="pick-up-time" class="datetimes"></td>'
     output+='<td><input type="datetime-local" name="shipping-time" id="shipping-time" class="datetimes"></td>'
     // output+='<td><select class="track-select">'+options+'</select></td>'
@@ -65,13 +65,13 @@ function doAdd(){
   let pick_up_address=$("#pick-up-address").val();
   let shipping_time=$("#shipping-time").val();
   let pick_up_time=$("#pick-up-time").val();
- // console.log($("#track-select").find("li").text())
   let track_number=$("#track-select li").text()
-  let track_img=$("#track-select li").attr("class").replace('hover-triger','')
-  
-
+  let track_img=$("#track-select li").attr("class")
+  if(!(typeof track_img=="undefined")){
+    track_img=track_img.replace('hover-triger','')
+  }
   // let user_id="<?=$user_id?>"
-  if(shipping_address=='' || pick_up_address=='' || shipping_time=='' || pick_up_time==''){
+  if(shipping_address=='' || pick_up_address=='' || shipping_time=='' || pick_up_time=='' || track_number=='' || typeof track_img=="undefined"){
     $("#msg").text('必須項目を入力してください');
     return false;
   }else{
@@ -79,21 +79,28 @@ function doAdd(){
       doc=querySnapshot.docs[0]
       data=doc.data()
       tel=data.tel
-      tel=data.url
-      db.collection('task').add({
-        shipping_address:shipping_address,
-        pick_up_address:pick_up_address,
-        shipping_time:shipping_time,
-        pick_up_time:pick_up_time,
-        user_id:user_id,
-        track_number:track_number,
-        track_img:track_img,
-        tel:tel,
-        url:url,
-        running_status:'off',
-      });
-      //setTimeout(function(){location.href="./mypage.php"},500);
-      showTaskList()
+      url=data.url
+      pick_up_latlng = new firebase.firestore.GeoPoint(pickLat, pickLng);
+      shipping_latlng = new firebase.firestore.GeoPoint(shippingLat, shippingLng);
+      setTimeout(function(){
+        db.collection('task').add({
+          shipping_address:shipping_address,
+          pick_up_address:pick_up_address,
+          shipping_time:shipping_time,
+          pick_up_latlng:pick_up_latlng,
+          shipping_latlng:shipping_latlng,
+          pick_up_time:pick_up_time,
+          user_id:user_id,
+          track_number:track_number,
+          track_img:track_img,
+          tel:tel,
+          url:url,
+          running_status:'off',
+        });
+      },100)
+      setTimeout(function(){
+        showTaskList()
+      },500)
     })
   }
 }
@@ -108,6 +115,38 @@ function doAdd(){
 //   }
 // })
 
+//入力された住所で位置情報検索
+pickLat=''
+pickLng=''
+$(document).on("focusout", "#pick-up-address" , function(){
+  pick_up_adress = $("#pick-up-address").val()
+  let geocoder = new google.maps.Geocoder();      // geocoderのコンストラクタ
+  geocoder.geocode({address: pick_up_adress}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      if (results[0].geometry) {
+        // 緯度経度を取得
+        pickLat= results[0].geometry.location.lat();
+        pickLng= results[0].geometry.location.lng();
+      }
+    }
+  })
+})
+shippingLat=''
+shippingLng=''
+$(document).on("focusout", "#shipping-address" , function(){
+  shipping_address = $("#shipping-address").val()
+  let geocoder = new google.maps.Geocoder();      // geocoderのコンストラクタ
+  geocoder.geocode({address:shipping_address}, function(results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      if (results[0].geometry) {
+        // 緯度経度を取得
+        shippingLat= results[0].geometry.location.lat();
+        shippingLng= results[0].geometry.location.lng();
+      }
+    }
+  })
+})
+
 //自作セレクトボックス
 $(document).on('click','.dropdown',function(){
   $("ul.dropdwn_menu").show()
@@ -115,7 +154,6 @@ $(document).on('click','.dropdown',function(){
 
 //トラックのセレクトボックスホバー時写真出す
 $(document).on('mouseenter','.hover-triger',function(){
-  console.log($(this).attr('class'))
   src=$(this).attr('class').replace('hover-triger','')
   imgTag="<img src='./uploads/"+src+"'>"
   $(".track-pic").html(imgTag)

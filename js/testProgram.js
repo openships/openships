@@ -2,24 +2,17 @@ function doTest(){
   testFlag='on'
   writeWithOriginPoint()
   getDividedPoints()
+  j=1
+  setInterval(function(){
+    if(testFlag=='on'){
+      rewriteWithNextPoint(j)
+      j+=1
+    }
+  },2000)
 
-  //asynchronyFunction();
-  // saveOriginPosition()
-  // setInterval(function(){
-  //   if(testFlag=='on'){
-  //     moveNextPoint()
-  //   }
-  // },10000);
   $("#testStart").prop("disabled",true)
   $("#testStop").prop("disabled",false)
 }
-
-
-
-
-
-
-
 
 function stopTest(){
   testFlag='off'
@@ -31,11 +24,13 @@ function stopTest(){
 function writeWithOriginPoint(){
   db.collection('task').get().then(function(querySnapshot){
     querySnapshot.docs.forEach(function(doc){
-      originLatLng=doc.data().originLatLng
-      theDoc=db.collection('task').doc(doc.id)
-      theDoc.update({
-        latlng:originLatLng
-      })
+      if(!(typeof doc.data().latlng=='undefined')){
+        originLatLng=doc.data().originLatLng
+        theDoc=db.collection('task').doc(doc.id)
+        theDoc.update({
+          latlng:originLatLng
+        })
+      }
     })
   })
 }
@@ -46,14 +41,14 @@ function moveNextPoint(){
   db.collection('task').get().then(function(querySnapshot){
     querySnapshot.docs.forEach(function(doc){
       data=doc.data();
-      latitude=data.latlng['Ic'];
-
-     
-      longitude=data.latlng['wc'];
-      LatLng = new google.maps.LatLng(latitude, longitude);
-      pick_up_address=data.pick_up_address
-      shipping_address=data.shipping_address
-      getNextPoint(LatLng,pick_up_address,shipping_address,doc)
+      if(!(typeof doc.data().latlng=='undefined')){
+        latitude=data.latlng['Ic'];
+        longitude=data.latlng['wc'];
+        LatLng = new google.maps.LatLng(latitude, longitude);
+        pick_up_address=data.pick_up_address
+        shipping_address=data.shipping_address
+        getNextPoint(LatLng,pick_up_address,shipping_address,doc)
+      }
     })
   })
 }
@@ -73,90 +68,77 @@ function getDividedPoints(){
       shippingLatLngList=[]
       LatLngList=[]
       db.collection('task').get().then(function(querySnapshot){''
-        
-
         querySnapshot.docs.forEach(function(doc){
-          docID=doc.id
-          docIDList.push(docID)
-
           data=doc.data() 
-          lat=data.pick_up_latlng['Ic']
-          lng=data.pick_up_latlng['wc']
-          pickLatLng=new google.maps.LatLng(lat,lng);
+          if(!(typeof doc.data().latlng=='undefined')){
+            docID=doc.id
+            docIDList.push(docID)
+            lat=data.pick_up_latlng['Ic']
+            lng=data.pick_up_latlng['wc']
+            pickLatLng=new google.maps.LatLng(lat,lng);
 
-          pickLatLngList.push(pickLatLng)
+            pickLatLngList.push(pickLatLng)
 
-          lat=data.shipping_latlng['Ic']
-          lng=data.shipping_latlng['wc']
-          shippingLatLng = new google.maps.LatLng(lat,lng);
+            lat=data.shipping_latlng['Ic']
+            lng=data.shipping_latlng['wc']
+            shippingLatLng = new google.maps.LatLng(lat,lng);
 
-          shippingLatLngList.push(shippingLatLng)
-        
-          lat=data.latlng["Ic"]
-          lng=data.latlng["wc"]
-          LatLng = new google.maps.LatLng(lat,lng);
-
-          LatLngList.push(LatLng)
+            shippingLatLngList.push(shippingLatLng)
           
+            lat=data.latlng["Ic"]
+            lng=data.latlng["wc"]
+            LatLng = new google.maps.LatLng(lat,lng);
+
+            LatLngList.push(LatLng)
+          }
         })
       })
-      data={"docIDList":docIDList,"LatLngList":LatLngList,"shippingLatLngList":shippingLatLngList}
+      data={"docIDList":docIDList,"LatLngList":LatLngList,"shippingLatLngList":shippingLatLngList,"pickLatLngList":pickLatLngList}
       resolve(data);
     }, 1000);
   }).then((data) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        console.log(data)
+        // console.log(data)
         docIDList=data["docIDList"]
         LatLngList=data["LatLngList"]
         shippingLatLngList=data["shippingLatLngList"]
         pickLatLngList=data["pickLatLngList"]
-
+        i=0
         docIDList.forEach(function(docID){
-          
+          let request = {
+            origin:LatLngList[i],           //現在地
+            destination:shippingLatLngList[i],//目的地
+            waypoints: [ // 経由地点(指定なしでも可)
+              { location: pickLatLngList[i] }
+            ],
+            travelMode: google.maps.DirectionsTravelMode.DRIVING, //ルートの種類
+          }
+          directionsService.route(request,function(result, status){
+            localStorage.setItem(docID,JSON.stringify(result.routes[0]))
+          })
+          i+=1
         })
-          
-        let request = {
-          origin:LatLng,           //現在地
-          destination:shippingLatLng,//目的地
-          waypoints: [ // 経由地点(指定なしでも可)
-            { location: pickLatLng }
-          ],
-          travelMode: google.maps.DirectionsTravelMode.DRIVING, //ルートの種類
-        }
-    
-        directionsService.route(request,function(result, status){
-          console.log(docID)
-          localStorage.setItem(docID,JSON.stringify(result.routes[0]))
-        //   latitude=result.routes[0].overview_path[1].lat()
-        //   longitude=result.routes[0].overview_path[1].lng()
-        })
-
       },1000)
     })
   })
+}
 
-
-    let request = {
-      origin:LatLng,           //現在地
-      destination:shippingLatLng,//目的地
-      waypoints: [ // 経由地点(指定なしでも可)
-        { location: pickLatLng }
-      ],
-      travelMode: google.maps.DirectionsTravelMode.DRIVING, //ルートの種類
-    }
-
-    directionsService.route(request,function(result, status){
-      console.log(docID)
-      localStorage.setItem(docID,JSON.stringify(result.routes[0]))
-    //   latitude=result.routes[0].overview_path[1].lat()
-    //   longitude=result.routes[0].overview_path[1].lng()
+function rewriteWithNextPoint(j){
+  docIDList.forEach(function(docID){
+    data=JSON.parse(localStorage.getItem(docID))
+    latitude=data["overview_path"][j]["lat"]
+    longitude=data["overview_path"][j]["lng"]
+    LatLng = new firebase.firestore.GeoPoint(latitude, longitude);
+    theDoc=db.collection('task').doc(docID)
+    theDoc.update({
+       latlng:LatLng
     })
+  })
 }
 
 
 // function getDividedPoints(){
- 
 //   return new Promise((resolve, reject) => {
 //     keyList=[]
 //     setTimeout(() => {
@@ -285,14 +267,14 @@ function getDividedPoints(){
 //   })
 // }
 
-function rewriteWithNextPoint(LatLng,doc){
-  // /console.log(doc.id)
-  //console.log(LatLng)
-  theDoc=db.collection('task').doc(doc.id)
-  theDoc.update({
-    latlng:LatLng
-  })
-}
+// function rewriteWithNextPoint(LatLng,doc){
+//   // /console.log(doc.id)
+//   //console.log(LatLng)
+//   theDoc=db.collection('task').doc(doc.id)
+//   theDoc.update({
+//     latlng:LatLng
+//   })
+// }
 
 
 // function saveOriginPosition(){
