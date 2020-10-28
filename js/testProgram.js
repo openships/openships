@@ -3,13 +3,12 @@ function doTest(){
   writeWithOriginPoint()
   getDividedPoints()
   j=1
-  setInterval(function(){
+  intervalId=setInterval(function(){
     if(testFlag=='on'){
       rewriteWithNextPoint(j)
       j+=1
     }
   },2000)
-
   $("#testStart").prop("disabled",true)
   $("#testStop").prop("disabled",false)
 }
@@ -19,6 +18,7 @@ function stopTest(){
   writeWithOriginPoint()
   $("#testStart").prop("disabled",false)
   $("#testStop").prop("disabled",true)
+  clearInterval(intervalId);
 }
 
 function writeWithOriginPoint(){
